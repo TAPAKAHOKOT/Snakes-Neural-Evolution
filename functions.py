@@ -1,6 +1,7 @@
 import math
 import pygame as pg
 import numpy as np 
+import os
 
 def sec_to_formated(sec):
     h = int(sec // 3600)
@@ -54,16 +55,47 @@ def draw_field(settings, feadBack):
 
         return arr
 
-def save_weights(settings):
-    np.save("size", settings.weights_size)
-    np.save("app", settings.best_app)
-    np.save("block", settings.best_block)
-    np.save("scores", settings.best_scores)
-    np.save("print_info", settings.print_info)
+def save_weights(settings, save_ind):
+    np.save("size_" + save_ind, settings.weights_size)
+    np.save("app_" + save_ind, settings.best_app)
+    np.save("block_" + save_ind, settings.best_block)
+    np.save("scores_" + save_ind, settings.best_scores)
+    np.save("print_info_" + save_ind, settings.print_info)
 
-def load_weights(settings):
-    settings.weights_size = np.load("size.npy")
-    settings.best_app = np.load("app.npy")
-    settings.best_block = np.load("block.npy")
-    settings.best_scores = np.load("scores.npy")
-    settings.print_info = np.load("print_info.npy")
+def save_cells_info(settings):
+    info_arr = [None] * settings.save_cells_num
+    for i, save_ind in enumerate([str(k) for k in range(1, settings.save_cells_num + 1)]):
+        try:
+            info_arr[i] = np.load("print_info_{}.npy".format(save_ind))
+        except:
+            pass
+
+    return info_arr
+
+def load_weights(settings, save_ind):
+    try:
+        settings.weights_size = np.load("size_{}.npy".format(save_ind))
+        settings.best_app = np.load("app_{}.npy".format(save_ind))
+        settings.best_block = np.load("block_{}.npy".format(save_ind))
+        settings.best_scores = np.load("scores_{}.npy".format(save_ind))
+        settings.print_info = np.load("print_info_{}.npy".format(save_ind))
+
+        return True
+    except:
+        return False
+
+
+def string_leveler(line, size):
+    line = str(line)
+    return (size - len(line)) // 2 * " " + line + (size - (size - len(line)) // 2 - len(line)) * " "
+
+def delete_save(save_ind):
+    try:
+        os.remove("size_{}.npy".format(save_ind))
+        os.remove("app_{}.npy".format(save_ind))
+        os.remove("block_{}.npy".format(save_ind))
+        os.remove("scores_{}.npy".format(save_ind))
+        os.remove("print_info_{}.npy".format(save_ind))
+        return True
+    except:
+        return False

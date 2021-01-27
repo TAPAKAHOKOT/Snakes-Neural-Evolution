@@ -6,7 +6,7 @@ class Settings:
         self.file_with_weights = "weights.txt"
 
         self.window_size = size[:]
-        self.population_size = 200
+        self.population_size = 140
 
         self.cell_size = 8
 
@@ -25,6 +25,8 @@ class Settings:
 
         self.eaten_apples = [0] * self.population_size
 
+        self.save_cells_num = 7
+
         self.print_info = [0, 0, 0]
         self.weights_size = [15]
         self.best_scores = [0, 0, 0, 0]
@@ -33,6 +35,7 @@ class Settings:
 
         self.pause = 0
         self.autosave = 0
+        self.autosave_cell_ind = ""
 
         self.colors = [
             (220, 20, 60), # RED

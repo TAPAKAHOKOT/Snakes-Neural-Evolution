@@ -82,7 +82,7 @@ while True:
 
 				if settings.autosave:
 					settings.print_info = [pop_number, settings.absolute_max_score, round(perf_counter() - start_time)]
-					save_weights(settings)
+					save_weights(settings, settings.autosave_cell_ind)
 
 			settings.max_score = 0
 
@@ -166,9 +166,13 @@ while True:
 		if i.type == pg.KEYDOWN:
 			if i.key == 113 or i.key == 27:
 				exit()
-			elif i.key == 32: # Space
+
+
+			elif i.key == 32: # Space	KILL AL SNAKES
 				snakes = []
-			elif i.key == 97: # A
+
+
+			elif i.key == 97: # ALL		SHOW APP ARRAYS
 				show_info = 1 - show_info
 
 				if (show_info):
@@ -176,7 +180,9 @@ while True:
 						for i in range(len(settings.best_app[0])):
 							print(settings.best_app[k][i])
 						print("\n")
-			elif i.key == 98: # B
+
+
+			elif i.key == 98: # B 	SHOW BLOCK ARRAYS
 				show_info = 1 - show_info
 
 				if (show_info):
@@ -184,28 +190,106 @@ while True:
 						for i in range(len(settings.best_app[0])):
 							print(settings.best_block[k][i])
 						print("\n")
-			elif i.key == 115: # S
-				settings.print_info = [pop_number, settings.absolute_max_score, round(perf_counter() - start_time)]
-				save_weights(settings)
-				print("\n\nSAVED\n\n")
-			elif i.key == 108: # L
-				load_weights(settings)
 
-				pop_number = int(settings.print_info[0])
-				settings.absolute_max_score = int(settings.print_info[1])
 
-				start_time = round(perf_counter()) - settings.print_info[2]
+			elif i.key == 115: # S 		SAVE CURRENT WEIGHTS
+				settings.pause = 1
+				save_ind = ""
+				while save_ind not in [str(k) for k in range(settings.save_cells_num + 1)]:
+					save_ind = input("\nSelect save number: 1 - {} or Print 0 to cansel\t".format(settings.save_cells_num))
 
-				print("\n\nLOADED\n\n")
-				snakes = []
-			elif i.key == 112: # P
+				if save_ind != "0":
+					settings.print_info = [pop_number, settings.absolute_max_score, round(perf_counter() - start_time)]
+					save_weights(settings, save_ind)
+					print("\n\nSAVED TO THE {} SAVE LOCATION\n\n".format(save_ind))
+				else:
+					print("\n\nSAVE CANCELED\n\n")
+
+				settings.pause = 0
+
+
+			elif i.key == 108: # L 		LOAD WEIGHTS
+				result_message = "\n\nLOAD CANCELED\n\n"
+
+				settings.pause = 1
+				save_ind = ""
+				while save_ind not in [str(k) for k in range(settings.save_cells_num + 1)]:
+					save_ind = input("\n\nSelect save number: 1 - {} or Print 0 to cansel\t".format(settings.save_cells_num))
+
+				if save_ind != "0":
+					if load_weights(settings, save_ind):
+						pop_number = int(settings.print_info[0])
+						settings.absolute_max_score = int(settings.print_info[1])
+
+						start_time = round(perf_counter()) - settings.print_info[2]
+
+						result_message = "\n\nLOADED\n\n"
+						snakes = []
+
+				print(result_message)
+				settings.pause = 0
+
+
+			elif i.key == 112: # P 		SET PAUSE
 				settings.pause = 1 - settings.pause
-			elif i.key == 99: # C
-				settings.autosave = 1 - settings.autosave
 
-				status = "ON" if (settings.autosave == 1) else "OFF"
 
-				print("\n\nAUTOSAVE TURNED {}\n\n".format(status))
+			elif i.key == 99: # C 		TURNING ON/OFF AUTOSAVE 
+				settings.pause = 1
+
+				save_ind = ""
+				while save_ind not in [str(k) for k in range(settings.save_cells_num + 1)]:
+					save_ind = input("\n\nSelect autosave number: 1 - {} or Print 0 to cansel\t".format(settings.save_cells_num))
+
+				if save_ind != "0":
+					settings.autosave = 1 - settings.autosave
+					settings.autosave_cell_ind = save_ind
+
+					status = "ON" if (settings.autosave == 1) else "OFF"
+
+					print("\n\nAUTOSAVE TURNED {}\n\n".format(status))
+				else:
+					print("\n\nAUTOSAVE CANSELED\n\n")
+
+				settings.pause = 0
+
+
+			elif i.key == 105: # I 		SHOW INFO ABAUT SAVE CELLS
+				cells_info = [""] * settings.save_cells_num
+				for i, info_arr in enumerate(save_cells_info(settings)):
+					if type(info_arr) != type(None):
+						cells_info[i] += str(i + 1) + ")" + " " * 3
+						cells_info[i] += string_leveler(info_arr[0], 10) + " " * 3
+						cells_info[i] += string_leveler(info_arr[1], 10) + " " * 3
+						cells_info[i] += string_leveler(sec_to_formated(info_arr[2]), 10) + " " * 3
+					else:
+						cells_info[i] += str(i + 1) + ")" + " " * 3
+						for k in range(3):
+							cells_info[i] += string_leveler("-", 10) + " " * 3
+
+				print("\n\n" + " " * 5 + "Population" + " " * 3 + string_leveler("Max score", 10) + " " * 3 + string_leveler("Work Time", 10))
+				for cell_info in cells_info:
+					print(cell_info)
+
+				settings.pause = 1
+
+
+			elif i.key == 100: # D 		DELETE SAVE CELL
+				settings.pause = 1
+
+				save_ind = ""
+				while save_ind not in [str(k) for k in range(settings.save_cells_num + 1)]:
+					save_ind = input("\n\nSelect delete number: 1 - {} or Print 0 to cansel\t".format(settings.save_cells_num))
+
+				if (save_ind != "0"):
+					if delete_save(save_ind):
+						print("\n\nSAVE NUMBER {} HAS BEEN DELETED\n\n".format(save_ind))
+					else:
+						print("\n\nDELETE CANSELED\n\n")
+				else:
+					print("\n\nDELETE CANSELED\n\n")
+
+				settings.pause = 0
 			else:
 				print(i.key)
 
