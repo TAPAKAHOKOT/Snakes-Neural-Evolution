@@ -29,9 +29,9 @@ class Snake:
         self.color = chs(self.settings.colors)
         self.head_color = tuple([ k + k // 10 - (k + k // 10) % 255 for k in self.color])
 
-        self.e_s = 20
-        self.min_e_s = -30
-        self.max_e_s = 30
+        self.e_s = self.settings.weights_size[0]
+        self.min_e_s = -40
+        self.max_e_s = 40
         if (self.settings.use_old_data):
             ind = rnd(0, 100)
             koefs = [50, 75, 90, 101]

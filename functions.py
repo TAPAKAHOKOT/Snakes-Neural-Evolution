@@ -1,11 +1,11 @@
 import math
 import pygame as pg
-
+import numpy as np 
 
 def sec_to_formated(sec):
-    h = sec // 3600
-    m = (sec - h * 3600) // 60
-    sec = sec - h * 3600 - m * 60
+    h = int(sec // 3600)
+    m = int((sec - h * 3600) // 60)
+    sec = int(sec - h * 3600 - m * 60)
     time_mes = "{}:{}:{}".format(h,m,sec)
 
     return time_mes
@@ -53,3 +53,17 @@ def draw_field(settings, feadBack):
                             for k in range(math.ceil(window_size[0] / settings.cell_size))]
 
         return arr
+
+def save_weights(settings):
+    np.save("size", settings.weights_size)
+    np.save("app", settings.best_app)
+    np.save("block", settings.best_block)
+    np.save("scores", settings.best_scores)
+    np.save("print_info", settings.print_info)
+
+def load_weights(settings):
+    settings.weights_size = np.load("size.npy")
+    settings.best_app = np.load("app.npy")
+    settings.best_block = np.load("block.npy")
+    settings.best_scores = np.load("scores.npy")
+    settings.print_info = np.load("print_info.npy")

@@ -3,8 +3,10 @@ class Settings:
     def __init__(self, surf, size):
         self.surf = surf
 
+        self.file_with_weights = "weights.txt"
+
         self.window_size = size[:]
-        self.population_size = 140
+        self.population_size = 200
 
         self.cell_size = 8
 
@@ -23,9 +25,13 @@ class Settings:
 
         self.eaten_apples = [0] * self.population_size
 
+        self.print_info = [0, 0, 0]
+        self.weights_size = [15]
         self.best_scores = [0, 0, 0, 0]
         self.best_app = [None, None, None, None]
         self.best_block = [None, None, None, None]
+
+        self.pause = 0
 
         self.colors = [
             (220, 20, 60), # RED
