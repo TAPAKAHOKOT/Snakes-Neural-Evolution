@@ -80,6 +80,10 @@ while True:
 			if (settings.max_score > settings.absolute_max_score):
 				settings.absolute_max_score = settings.max_score
 
+				if settings.autosave:
+					settings.print_info = [pop_number, settings.absolute_max_score, round(perf_counter() - start_time)]
+					save_weights(settings)
+
 			settings.max_score = 0
 
 		counter += 1
@@ -196,6 +200,12 @@ while True:
 				snakes = []
 			elif i.key == 112: # P
 				settings.pause = 1 - settings.pause
+			elif i.key == 99: # C
+				settings.autosave = 1 - settings.autosave
+
+				status = "ON" if (settings.autosave == 1) else "OFF"
+
+				print("\n\nAUTOSAVE TURNED {}\n\n".format(status))
 			else:
 				print(i.key)
 

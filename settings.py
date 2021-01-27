@@ -32,6 +32,7 @@ class Settings:
         self.best_block = [None, None, None, None]
 
         self.pause = 0
+        self.autosave = 0
 
         self.colors = [
             (220, 20, 60), # RED
