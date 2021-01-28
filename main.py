@@ -8,7 +8,10 @@ from random import choice as chs
 from random import randint as rnd
 
 from copy import deepcopy
+from colorama import init as col_init, Fore
 import os
+
+col_init()
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = '%i,%i' % (10, 10)
 
@@ -290,6 +293,23 @@ while True:
 					print("\n\nDELETE CANSELED\n\n")
 
 				settings.pause = 0
+
+
+			elif i.key == 104: # H 		GET HELP
+				print("\n\nPress '" + Fore.YELLOW + "D" + Fore.RESET + "' to " + Fore.RED + "delete" + Fore.RESET + " saving cell")
+				print("Press '" + Fore.YELLOW + "L" + Fore.RESET + "' to " + Fore.GREEN + "load" + Fore.RESET + " saved snakes brains")
+				print("Press '" + Fore.YELLOW + "S" + Fore.RESET + "' to " + Fore.GREEN + "save" + Fore.RESET + " snakes brains")
+				print("Press '" + Fore.YELLOW + "I" + Fore.RESET + "' to get " + Fore.CYAN + "info" + Fore.RESET + " about saving cells")
+				print("Press '" + Fore.YELLOW + "C" + Fore.RESET + "' to turn on/off " + Fore.CYAN + "autosaving" + Fore.RESET)
+
+				print("\nPress '" + Fore.YELLOW + "B" + Fore.RESET + "' to see " + Fore.CYAN + "Block" + Fore.RESET + " arrays")
+				print("Press '" + Fore.YELLOW + "A" + Fore.RESET + "' to see " + Fore.CYAN + "App" + Fore.RESET + " arrays")
+
+				print("\nPress '" + Fore.YELLOW + "P" + Fore.RESET + "' to set snakes on " + Fore.CYAN + "pause" + Fore.RESET)
+				print("Press '" + Fore.YELLOW + "Space" + Fore.RESET + "' to " + Fore.RED + "kill" + Fore.RESET + " all snakes")
+				
+				settings.pause = 1
+				
 			else:
 				print(i.key)
 
