@@ -3,6 +3,7 @@
 ![Screenshot](v1.gif) 
 
 Clicks:
+
         "P" to set snakes on pause
         
         "I" to get info about save lots
